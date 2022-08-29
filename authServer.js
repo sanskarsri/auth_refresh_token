@@ -5,7 +5,7 @@ const app=express();
 
 app.use(express.json());
 
-const refreshTokens = [];
+var refreshTokens = [];
 
 app.post('/token',(req,res)=>{
     const refreshToken = req.body.token;
@@ -21,6 +21,11 @@ app.post('/token',(req,res)=>{
         const accessToken = generateAccessToken({name: user.name});
         res.json({accessToken});
     })
+})
+
+app.delete('/logout',(req,res)=>{
+    refreshTokens = refreshTokens.filter(token => token !==req.body.token)
+    res.sendStatus(204);
 })
 
 app.post('/login',(req,res)=>{
